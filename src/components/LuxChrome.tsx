@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { LuxHeader, LuxFooter, LuxChatWidget } from '@luxfi/gui'
+import { LuxHeader, LuxFooter, ChatWidget } from '@luxfi/gui'
 import type { ReactNode } from 'react'
 
 const renderLink = ({ href, children, className }: { href: string; children: ReactNode; className?: string }) => (
@@ -20,8 +20,8 @@ export function LuxSiteFooter() {
   return <LuxFooter renderLink={renderLink} legalEntity="Lux Partners" />
 }
 
-const LUX_WIDGET_KEY = process.env.NEXT_PUBLIC_LUX_WIDGET_KEY ?? 'hz_widget_public'
+const WIDGET_KEY = process.env.NEXT_PUBLIC_WIDGET_KEY ?? 'hz_widget_public'
 
-export function LuxAssistant({ pageContext }: { pageContext?: string }) {
-  return <LuxChatWidget authToken={LUX_WIDGET_KEY} pageContext={pageContext} />
+export function Assistant({ pageContext }: { pageContext?: string }) {
+  return <ChatWidget authToken={WIDGET_KEY} pageContext={pageContext} />
 }
