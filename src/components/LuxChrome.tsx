@@ -20,9 +20,8 @@ export function LuxSiteFooter() {
   return <LuxFooter renderLink={renderLink} legalEntity="Lux Partners" />
 }
 
-const LUX_PK = process.env.NEXT_PUBLIC_LUX_PK ?? ''
+const LUX_WIDGET_KEY = process.env.NEXT_PUBLIC_LUX_WIDGET_KEY ?? 'hz_widget_public'
 
 export function LuxAssistant({ pageContext }: { pageContext?: string }) {
-  if (!LUX_PK) return null
-  return <LuxChatWidget publishableKey={LUX_PK} pageContext={pageContext} />
+  return <LuxChatWidget authToken={LUX_WIDGET_KEY} pageContext={pageContext} />
 }
