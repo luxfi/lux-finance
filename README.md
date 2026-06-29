@@ -1,3 +1,5 @@
+<p align="center"><img src=".github/hero.svg" alt="lux-finance" width="880"></p>
+
 # finance
 Lux Finance static site.
 
