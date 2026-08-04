@@ -1,12 +1,21 @@
 import Link from 'next/link'
 import { FinanceHeader, LuxSiteFooter } from '@/components/LuxChrome'
 
-const stats = [
-  { label: 'Total Value Locked', value: '$0' },
-  { label: 'Total Borrowed', value: '$0' },
-  { label: 'Active Positions', value: '0' },
-  { label: 'Networks', value: '4' },
-]
+// There is no `stats` array. It held four numbers — $0 TVL, $0 borrowed, 0
+// positions, 4 networks — and this page is `output: 'export'`, so whatever it
+// held was frozen at build time. A figure a static export states about a live
+// protocol is not a measurement; it is the date of the last `next build`.
+//
+// That is not a hypothetical: while these four said "$0", app.lux.finance said
+// "$125M+ Total Value Locked" for the same protocol. Two Lux surfaces, two
+// answers, neither of them measured.
+//
+// The fix is not to bake a better number here. It is that ONE surface states
+// Liquid's size, and it is the one that can read the chain when you look at it:
+// app.lux.finance takes an eth_getCode/eth_getBalance batch on mount and prints
+// what came back, or says in words that it could not ask. This page links there
+// and states nothing of its own — which makes disagreeing with it structurally
+// impossible rather than merely unlikely.
 
 const steps = [
   {
@@ -84,43 +93,43 @@ const mytStrategies = [
   {
     vault: 'xETH Vault',
     strategies: [
-      { name: 'Lido wstETH', apy: '4%', risk: 'Conservative' },
-      { name: 'Rocket Pool rETH', apy: '3.5%', risk: 'Conservative' },
-      { name: 'Frax sfrxETH', apy: '5%', risk: 'Moderate' },
-      { name: 'EigenLayer eETH', apy: '6%', risk: 'Moderate' },
-      { name: 'Tokemak tokeETH', apy: '8%', risk: 'Aggressive' },
+      { name: 'Lido wstETH', risk: 'Conservative' },
+      { name: 'Rocket Pool rETH', risk: 'Conservative' },
+      { name: 'Frax sfrxETH', risk: 'Moderate' },
+      { name: 'EigenLayer eETH', risk: 'Moderate' },
+      { name: 'Tokemak tokeETH', risk: 'Aggressive' },
     ],
   },
   {
     vault: 'xUSD Vault',
     strategies: [
-      { name: 'AAVE aUSDC', apy: '3%', risk: 'Conservative' },
-      { name: 'Yearn yvUSDC', apy: '5%', risk: 'Moderate' },
-      { name: 'Morpho mUSDC', apy: '6%', risk: 'Moderate' },
+      { name: 'AAVE aUSDC', risk: 'Conservative' },
+      { name: 'Yearn yvUSDC', risk: 'Moderate' },
+      { name: 'Morpho mUSDC', risk: 'Moderate' },
     ],
   },
   {
     vault: 'xLUX Vault',
     strategies: [
-      { name: 'Lux staking stLUX', apy: '5%', risk: 'Conservative' },
+      { name: 'Lux staking stLUX', risk: 'Conservative' },
     ],
   },
   {
     vault: 'xZOO Vault',
     strategies: [
-      { name: 'Zoo staking stZOO', apy: '8%', risk: 'Conservative' },
+      { name: 'Zoo staking stZOO', risk: 'Conservative' },
     ],
   },
   {
     vault: 'xAI Vault',
     strategies: [
-      { name: 'AI compute stAI', apy: '12%', risk: 'Moderate' },
+      { name: 'AI compute stAI', risk: 'Moderate' },
     ],
   },
   {
     vault: 'xPARS Vault',
     strategies: [
-      { name: 'Pars staking stPARS', apy: '6%', risk: 'Conservative' },
+      { name: 'Pars staking stPARS', risk: 'Conservative' },
     ],
   },
 ]
@@ -164,22 +173,31 @@ const features = [
   },
 ]
 
+// Three of the four cards that used to be here were inherited from the Alchemix
+// fork with the name swapped, and none of the three survives being checked:
+//
+//   "Multiple independent audits by leading security firms" — there is no
+//   Liquid audit. lux/audits holds twenty-odd reports (consensus, network,
+//   dexvm, zkvm, crypto…) and not one covers this protocol.
+//
+//   "$500K bounty program for critical vulnerabilities" — immunefi.com/bounty/
+//   liquid/ is a 404. The URL is Alchemix's with the name replaced.
+//
+//   "All contracts verified and publicly auditable on-chain" — the vault
+//   addresses answer eth_getCode with "0x" on chain 96369; there is no bytecode
+//   to verify. (luxfi/liquid is a private repository besides.)
+//
+// What is left is what is true today, said plainly. Add cards back as the facts
+// arrive — an audit report, a live bounty, deployed bytecode — not before.
 const securityFeatures = [
   {
-    title: 'Audited Contracts',
-    description: 'Multiple independent audits by leading security firms.',
-  },
-  {
     title: 'Non-Custodial',
-    description: 'Your keys, your assets. We never hold your funds.',
+    description: 'Positions are contracts you control. No Lux service ever holds your collateral.',
   },
   {
-    title: 'Open Source',
-    description: 'All contracts verified and publicly auditable on-chain.',
-  },
-  {
-    title: 'Bug Bounty',
-    description: '$500K bounty program for critical vulnerabilities.',
+    title: 'Not Yet Deployed',
+    description:
+      'Liquid has no vault bytecode on any Lux chain yet, so there is nothing at risk and nothing to withdraw. The app reads this from the chain rather than asserting it.',
   },
 ]
 
@@ -233,17 +251,19 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Stats Bar */}
+      {/* Where the figures are. Prose, not numbers — see the note above `steps`. */}
       <section className="py-12 px-6 border-y border-border bg-card backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-3xl md:text-4xl font-bold text-foreground mb-2">{stat.value}</p>
-                <p className="text-muted-foreground text-sm">{stat.label}</p>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-muted-foreground">
+            Liquid&rsquo;s locked value, live vaults and head block are read from the C&#8209;Chain
+            when you open the app — this page does not carry a copy of them.
+          </p>
+          <Link
+            href="https://app.lux.finance"
+            className="inline-block mt-4 text-foreground font-medium underline underline-offset-4 hover:text-muted-foreground transition-colors"
+          >
+            See what Liquid holds right now
+          </Link>
         </div>
       </section>
 
@@ -311,7 +331,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">MYT Strategies</h2>
           <p className="text-muted-foreground text-center mb-16 max-w-2xl mx-auto">
-            Mix-Yield Token strategies auto-allocate collateral yield across battle-tested protocols. Yield flows directly to debt repayment.
+            The MYT strategies Liquid is designed around. None is live yet, so no yield or APY is quoted — a rate for a strategy that is not running would be a guess.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mytStrategies.map((vault) => (
@@ -327,7 +347,6 @@ export default function Page() {
                         <p className="text-sm font-medium text-foreground">{strategy.name}</p>
                         <p className={`text-xs ${riskColors[strategy.risk]}`}>{strategy.risk}</p>
                       </div>
-                      <span className="text-sm font-bold text-foreground">{strategy.apy}</span>
                     </div>
                   ))}
                 </div>
@@ -366,9 +385,10 @@ export default function Page() {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Security First</h2>
           <p className="text-muted-foreground text-center mb-16 max-w-2xl mx-auto">
-            Your assets are protected by battle-tested infrastructure.
+            What is true about Liquid&rsquo;s security right now — see the note above{' '}
+            <code>securityFeatures</code> for what was removed and why.
           </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {securityFeatures.map((feature) => (
               <div
                 key={feature.title}
