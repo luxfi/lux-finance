@@ -1,8 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import type { Metadata, Viewport } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
 import { Analytics } from './analytics'
+import '@hanzo/font/css'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -68,7 +67,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" className={`dark ${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className="dark">
       <body className="font-sans bg-black text-white min-h-screen antialiased">
         <Analytics>{children}</Analytics>
       </body>
