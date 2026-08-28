@@ -17,7 +17,7 @@ export function FinancialBankHeader({ actions }: { actions?: ReactNode }) {
 }
 
 export function LuxSiteFooter() {
-  return <LuxFooter renderLink={renderLink} legalEntity="Lux Partners" />
+  return <LuxFooter renderLink={renderLink} legalEntity="Lux Industries Inc" />
 }
 
 const WIDGET_KEY = process.env.NEXT_PUBLIC_WIDGET_KEY ?? 'hz_widget_public'

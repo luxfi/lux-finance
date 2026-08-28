@@ -8,9 +8,9 @@ export const metadata: Metadata = {
   title: 'LUX Finance - Liquid Protocol | Self-Repaying Loans',
   description: 'Liquid Protocol V3: Self-repaying loans powered by MYT yield strategies. Deposit yield-bearing collateral, borrow x* multiplied tokens, and let yield auto-repay your debt. 90% LTV.',
   keywords: ['DeFi', 'self-repaying loans', 'Liquid Protocol', 'x* tokens', 'xETH', 'xUSD', 'xLUX', 'xZOO', 'xAI', 'xPARS', 'MYT', 'yield', 'lending', 'borrowing', 'multi-chain', 'LUX'],
-  authors: [{ name: 'Lux Partners' }],
-  creator: 'Lux Partners',
-  publisher: 'Lux Partners',
+  authors: [{ name: 'Lux Industries Inc' }],
+  creator: 'Lux Industries Inc',
+  publisher: 'Lux Industries Inc',
   metadataBase: new URL('https://lux.finance'),
   alternates: {
     canonical: '/',
